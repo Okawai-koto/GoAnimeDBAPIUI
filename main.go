@@ -15,7 +15,7 @@ func main() {
 	} else {
 		response, err := db.Query("CREATE TABLE Persons23 (PersonID int,LastName varchar(255),FirstName varchar(255),Address varchar(255),City varchar(255));")
 		if err != nil {
-			fmt.Println("err2", &err)
+			fmt.Println("err2", err)
 		} else {
 			fmt.Println("%s", response)
 		}
