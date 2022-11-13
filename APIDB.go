@@ -5,15 +5,21 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 func main() {
-	getApi()
+
+	for i := 0; i < 100000; i++ {
+		getApi(i)
+
+	}
+
 }
 
-func getApi() {
+func getApi(num int) {
 
-	url := "https://api.jikan.moe/v4/anime/40591/full"
+	url := "https://api.jikan.moe/v4/anime/" + strconv.Itoa(num) + "/full"
 
 	response, err := http.Get(url)
 
@@ -30,30 +36,21 @@ func getApi() {
 			Year      int    `json:"year"`
 			Season    string `json:"season"`
 			Licensors []struct {
-				MalID int    `json:"mal_id"`
-				Type  string `json:"type"`
-				Name  string `json:"name"`
-				URL   string `json:"url"`
+				LicensorId int `json:"mal_id"`
 			} `json:"licensors"`
 			TitleEnglish string `json:"title_english"`
 			Title        string `json:"title"`
 
 			Producers []struct {
-				MalID int    `json:"mal_id"`
-				Type  string `json:"type"`
-				Name  string `json:"name"`
-				URL   string `json:"url"`
+				ProducersId int `json:"mal_id"`
 			} `json:"producers"`
 
 			Genres []struct {
-				MalID int `json:"mal_id"`
+				GenresId int `json:"mal_id"`
 			} `json:"genres"`
 
 			Themes []struct {
-				MalID int    `json:"mal_id"`
-				Type  string `json:"type"`
-				Name  string `json:"name"`
-				URL   string `json:"url"`
+				ThemesId int `json:"mal_id"`
 			} `json:"themes"`
 
 			Relations []struct {
@@ -78,6 +75,16 @@ func getApi() {
 			fmt.Println("deneme hatası", err)
 		}
 		json.Unmarshal([]byte(data), &deneme)
-		fmt.Println(deneme.Data)
+		fmt.Println("Id: ", deneme.Data.Id)
+		fmt.Printf(deneme.Data.Title)
+
+		// for i, v := range deneme.Data.Licensors {
+		// 	fmt.Println(i, ". licensor:", v.LicensorId)
+		// }
+
+		// for i, v := range deneme.Data.Producers {
+		// 	fmt.Println(strconv.Itoa(i) + ". producer:" + strconv.Itoa(v.ProducersId))
+		// }
+
 	}
 }
