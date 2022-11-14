@@ -24,22 +24,31 @@ type Data struct {
 	Year      int    `json:"year"`
 	Season    string `json:"season"`
 	Licensors []struct {
-		MalID int `json:"mal_id"`
+		LicensorId int `json:"mal_id"`
 	} `json:"licensors"`
 	TitleEnglish string `json:"title_english"`
 	Title        string `json:"title"`
 
 	Producers []struct {
-		MalID int `json:"mal_id"`
+		ProducersId int `json:"mal_id"`
 	} `json:"producers"`
 
 	Genres []struct {
-		MalID int `json:"mal_id"`
+		GenresId int `json:"mal_id"`
 	} `json:"genres"`
 
 	Themes []struct {
-		MalID int `json:"mal_id"`
+		ThemesId int `json:"mal_id"`
 	} `json:"themes"`
+
+	Relations []struct {
+		Relation string `json:"relation"`
+		Entry    []struct {
+			MalID int `json:"mal_id"`
+
+			Name string `json:"name"`
+		} `json:"entry"`
+	} `json:"relations"`
 }
 
 func GetDB() (db *sql.DB, err error) {
@@ -157,15 +166,15 @@ func addToDB(columns []dbColumn, anime Anime) {
 	score := fmt.Sprintf("%f", anime.data.Score)
 	licensor := ""
 	for _, v := range anime.data.Licensors {
-		licensor += string(v.MalID)
+		licensor += string(v.LicensorId)
 	}
 	producers := ""
 	for _, v := range anime.data.Producers {
-		producers += string(v.MalID)
+		producers += string(v.ProducersId)
 	}
 	genre := ""
 	for _, v := range anime.data.Genres {
-		genre += string(v.MalID)
+		genre += string(v.GenresId)
 	}
 
 	sqlQueryString += "VALUES (" +
@@ -239,6 +248,7 @@ func main() {
 		Producers:    nil,
 		Genres:       nil,
 		Themes:       nil,
+		Relations:    nil,
 	}
 	andime := Anime{
 		data: data,

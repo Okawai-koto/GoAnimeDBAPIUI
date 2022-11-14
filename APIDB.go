@@ -14,14 +14,18 @@ func main() {
 	tickTime := time.NewTicker(time.Second * 1)
 	sayac := 0
 	for v := range tickTime.C {
+
 		fmt.Println(v)
-		getApi(sayac)
+		x := getApi(sayac)
+
+		fmt.Println(x.data.Episodes)
+
 		sayac = sayac + 1
 	}
 
 }
 
-func getApi(num int) {
+func getApi(num int) Anime {
 
 	url := "https://api.jikan.moe/v4/anime/" + strconv.Itoa(num) + "/full"
 
@@ -79,8 +83,8 @@ func getApi(num int) {
 			fmt.Println("deneme hatası", err)
 		}
 		json.Unmarshal([]byte(data), &deneme)
-		fmt.Println("Id: ", deneme.Data.Id)
-		fmt.Printf(deneme.Data.Title)
+		// fmt.Println("Id: ", deneme.Data.Id)
+		// fmt.Printf(deneme.Data.Title)
 
 		// for i, v := range deneme.Data.Licensors {
 		// 	fmt.Println(i, ". licensor:", v.LicensorId)
@@ -91,4 +95,5 @@ func getApi(num int) {
 		// }
 
 	}
+	return deneme
 }
