@@ -6,13 +6,17 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func main() {
 
-	for i := 0; i < 100000; i++ {
-		getApi(i)
-
+	tickTime := time.NewTicker(time.Second * 1)
+	sayac := 0
+	for v := range tickTime.C {
+		fmt.Println(v)
+		getApi(sayac)
+		sayac = sayac + 1
 	}
 
 }
