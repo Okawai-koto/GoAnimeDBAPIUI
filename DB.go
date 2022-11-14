@@ -8,49 +8,6 @@ import (
 	_ "github.com/denisenkom/go-mssqldb"
 )
 
-type Anime struct {
-	data Data
-}
-
-type Data struct {
-	Id       int     `json:"mal_id"`
-	Type     string  `json:"type"`
-	Episodes int     `json:"episodes"`
-	Duration string  `json:"duration"`
-	Rating   string  `json:"rating"`
-	Score    float64 `json:"score"`
-	Rank     int     `json:"rank"`
-
-	Year      int    `json:"year"`
-	Season    string `json:"season"`
-	Licensors []struct {
-		LicensorId int `json:"mal_id"`
-	} `json:"licensors"`
-	TitleEnglish string `json:"title_english"`
-	Title        string `json:"title"`
-
-	Producers []struct {
-		ProducersId int `json:"mal_id"`
-	} `json:"producers"`
-
-	Genres []struct {
-		GenresId int `json:"mal_id"`
-	} `json:"genres"`
-
-	Themes []struct {
-		ThemesId int `json:"mal_id"`
-	} `json:"themes"`
-
-	Relations []struct {
-		Relation string `json:"relation"`
-		Entry    []struct {
-			MalID int `json:"mal_id"`
-
-			Name string `json:"name"`
-		} `json:"entry"`
-	} `json:"relations"`
-}
-
 func GetDB() (db *sql.DB, err error) {
 	db, err = sql.Open("mssql", "server=localhost; Trusted_Connection=true;Database=GoAnimeDB")
 	return
@@ -87,10 +44,6 @@ func columnsAnime() []dbColumn {
 		dbColumn{
 			name:       "Score",
 			columnType: "float",
-		},
-		dbColumn{
-			name:       "Rank",
-			columnType: "int",
 		},
 		dbColumn{
 			name:       "Year",
@@ -156,48 +109,47 @@ func createTable(columns []dbColumn) {
 
 }
 
-func addToDB(columns []dbColumn, anime Anime) {
+func AddToDB(columns []dbColumn, anime Anime) {
 	sqlQueryString := "INSERT INTO Anime ("
 	for _, v := range columns {
 		sqlQueryString += v.name + ", "
 	}
 	sqlQueryString = sqlQueryString[:len(sqlQueryString)-2]
 	sqlQueryString += ") "
-	score := fmt.Sprintf("%f", anime.data.Score)
+	score := fmt.Sprintf("%f", anime.Data.Score)
 	licensor := ""
-	for _, v := range anime.data.Licensors {
-		licensor += string(v.LicensorId)
+	for _, v := range anime.Data.Licensors {
+		licensor += strconv.Itoa(v.LicensorId)
 	}
 	producers := ""
-	for _, v := range anime.data.Producers {
-		producers += string(v.ProducersId)
+	for _, v := range anime.Data.Producers {
+		producers += strconv.Itoa(v.ProducersId)
 	}
 	genre := ""
-	for _, v := range anime.data.Genres {
-		genre += string(v.GenresId)
+	for _, v := range anime.Data.Genres {
+		genre += strconv.Itoa(v.GenresId)
 	}
-
 	sqlQueryString += "VALUES (" +
-		strconv.Itoa(anime.data.Id) + ", " +
-		anime.data.Type + ", " +
-		strconv.Itoa(anime.data.Episodes) + ", " +
-		anime.data.Rating + ", " +
-		anime.data.Duration + ", " +
+		strconv.Itoa(anime.Data.Id) + ", " +
+		"'" + anime.Data.Type + "'" + ", " +
+		strconv.Itoa(anime.Data.Episodes) + ", " +
+		"'" + anime.Data.Rating + "'" + ", " +
+		"'" + anime.Data.Duration + "'" + ", " +
 		score + ", " +
-		strconv.Itoa(anime.data.Year) + ", " +
-		anime.data.Season + ", " +
+		strconv.Itoa(anime.Data.Year) + ", " +
+		"'" + anime.Data.Season + "'" + ", " +
 		licensor + ", " +
-		anime.data.Title + ", " +
-		anime.data.TitleEnglish + ", " +
-		"TR" + ", " +
-		producers + ", " +
-		genre + ", " +
-		");"
+		"'" + anime.Data.Title + "'" + ", " +
+		"'" + anime.Data.TitleEnglish + "'" + ", " +
+		"'TR'" + ", " +
+		string(producers) + ", " +
+		string(genre) + ");"
 	fmt.Println(sqlQueryString)
-	//sqlQuery(sqlQueryString)
+	sqlQuery(sqlQueryString)
 
 }
 
+/*
 func addToDBV1(tableName string, test_structs Anime) {
 	/*
 		sqlQueryString := "INSERT INTO " + tableName + " ("
@@ -212,7 +164,7 @@ func addToDBV1(tableName string, test_structs Anime) {
 		fmt.Println(sqlQueryString)
 		//sqlQuery("(CustomerName, ContactName, Address, City, PostalCode, Country) "+
 		//"VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');")
-	*/
+
 }
 
 func main() {
@@ -230,28 +182,32 @@ func main() {
 		for i := 0; i < test.NumField(); i++ {
 			fmt.Println("Name: ", test.Field(i).Interface())
 		}
-	*/
+*/
+/*
+		data := Data{
+			Id:           1,
+			Type:         "1",
+			Episodes:     12,
+			Duration:     "23",
+			Rating:       "8321",
+			Score:        8.7,
+			Rank:         300,
+			Year:         2016,
+			Season:       "2. sezon",
+			Licensors:    nil,
+			TitleEnglish: "deneme 12 34",
+			Title:        "başlıktır bu",
+			Producers:    nil,
+			Genres:       nil,
+			Themes:       nil,
+			Relations:    nil,
+		}
+		andime := Anime{
+			data: data,
+		}
 
-	data := Data{
-		Id:           1,
-		Type:         "1",
-		Episodes:     12,
-		Duration:     "23",
-		Rating:       "8321",
-		Score:        8.7,
-		Rank:         300,
-		Year:         2016,
-		Season:       "2. sezon",
-		Licensors:    nil,
-		TitleEnglish: "deneme 12 34",
-		Title:        "başlıktır bu",
-		Producers:    nil,
-		Genres:       nil,
-		Themes:       nil,
-		Relations:    nil,
-	}
-	andime := Anime{
-		data: data,
-	}
-	addToDB(columnsAnime(), andime)
+	anime := getApi(1)
+	addToDB(columnsAnime(), anime)
+
 }
+*/
