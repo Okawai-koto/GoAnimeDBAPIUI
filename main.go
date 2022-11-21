@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	createTable(columnsAnime())
+	//createTable(columnsAnime())
 
 	tickTime := time.NewTicker(time.Second * 2)
 	sayac := 0
