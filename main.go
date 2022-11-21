@@ -9,15 +9,16 @@ import (
 
 func main() {
 
-	//createTable(columnsAnime())
+	createTable(columnsAnime())
 
-	tickTime := time.NewTicker(time.Second * 1)
+	tickTime := time.NewTicker(time.Second * 2)
 	sayac := 0
 	_ = tickTime.C
 	for v := range tickTime.C {
 		_ = v
 		x := getApi(sayac)
 		if x.Data.Id != 0 {
+			x = Kontrol(x)
 			fmt.Println(x.Data.Title)
 			AddToDB(columnsAnime(), x)
 		}

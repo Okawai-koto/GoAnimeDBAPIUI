@@ -151,63 +151,64 @@ func AddToDB(columns []dbColumn, anime Anime) {
 
 /*
 func addToDBV1(tableName string, test_structs Anime) {
-	/*
-		sqlQueryString := "INSERT INTO " + tableName + " ("
-		test_s := Anime{}
-		reflect := reflect.ValueOf(&test_s.Data).Elem()
-		for i := 0; i < reflect.NumField(); i++ {
-			sqlQueryString += reflect.Type().Field(i).Name + ",\n "
-		}
 
-		sqlQueryString = sqlQueryString[:len(sqlQueryString)-2]
-		sqlQueryString += ") ("
-		fmt.Println(sqlQueryString)
-		//sqlQuery("(CustomerName, ContactName, Address, City, PostalCode, Country) "+
-		//"VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');")
+	sqlQueryString := "INSERT INTO " + tableName + " ("
+	test_s := Anime{}
+	reflect := reflect.ValueOf(&test_s.Data).Elem()
+	for i := 0; i < reflect.NumField(); i++ {
+		sqlQueryString += reflect.Type().Field(i).Name + ",\n "
+	}
+
+	sqlQueryString = sqlQueryString[:len(sqlQueryString)-2]
+	sqlQueryString += ") ("
+	fmt.Println(sqlQueryString)
+	//sqlQuery("(CustomerName, ContactName, Address, City, PostalCode, Country) "+
+	//"VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');")
 
 }
-
+*/
+/*
 func main() {
-	//createTable("Anime", columnsAnime())
+	createTable("Anime", columnsAnime())
 	//createTable("Images", columns())
 	//createTable("Genres", columns())
 	//test_structs := Anime{}
 	//addToDB("Test", test_structs)
-	/*
-		test_s := test_struct{}
-		test_s.Data.id = 5
-		test_s.Data.Title = "tt"
-		test_s.Data.Year = 50
-		test := reflect.ValueOf(&test_s).Elem()
-		for i := 0; i < test.NumField(); i++ {
-			fmt.Println("Name: ", test.Field(i).Interface())
-		}
-*/
-/*
-		data := Data{
-			Id:           1,
-			Type:         "1",
-			Episodes:     12,
-			Duration:     "23",
-			Rating:       "8321",
-			Score:        8.7,
-			Rank:         300,
-			Year:         2016,
-			Season:       "2. sezon",
-			Licensors:    nil,
-			TitleEnglish: "deneme 12 34",
-			Title:        "başlıktır bu",
-			Producers:    nil,
-			Genres:       nil,
-			Themes:       nil,
-			Relations:    nil,
-		}
-		andime := Anime{
-			data: data,
-		}
 
-	anime := getApi(1)
-	addToDB(columnsAnime(), anime)
+			test_s := test_struct{}
+			test_s.Data.id = 5
+			test_s.Data.Title = "tt"
+			test_s.Data.Year = 50
+			test := reflect.ValueOf(&test_s).Elem()
+			for i := 0; i < test.NumField(); i++ {
+				fmt.Println("Name: ", test.Field(i).Interface())
+			}
+
+
+			data := Data{
+				Id:           1,
+				Type:         "1",
+				Episodes:     12,
+				Duration:     "23",
+				Rating:       "8321",
+				Score:        8.7,
+				Rank:         300,
+				Year:         2016,
+				Season:       "2. sezon",
+				Licensors:    nil,
+				TitleEnglish: "deneme 12 34",
+				Title:        "başlıktır bu",
+				Producers:    nil,
+				Genres:       nil,
+				Themes:       nil,
+				Relations:    nil,
+			}
+			andime := Anime{
+				data: data,
+			}
+
+		anime := getApi(1)
+		addToDB(columnsAnime(), anime)
 
 }
 */
